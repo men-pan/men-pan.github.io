@@ -5,101 +5,147 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>世の中に綿パンが少なくて困る</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;700&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Zen+Kaku+Gothic+New:wght@300;400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #f5f3ee;
-    --fg: #1a1814;
-    --muted: #8a8680;
-    --accent: #2a2724;
-    --line: #d8d4cc;
-    --hover-bg: #ede9e2;
+    --bg: #f0ede6;
+    --fg: #1c1a17;
+    --muted: #9a9590;
+    --line: #d5d0c8;
+    --hover: #e8e4dc;
   }
 
   html, body {
     height: 100%;
     background: var(--bg);
     color: var(--fg);
-    font-family: 'Zen Kaku Gothic New', sans-serif;
-    font-weight: 300;
   }
 
   body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+
+  /* 左：画像エリア */
+  .image-panel {
+    position: relative;
+    background: #ddd8d0;
+    overflow: hidden;
+  }
+
+  .image-placeholder {
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    padding: 48px 24px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    opacity: 0.5;
   }
 
-  .container {
-    width: 100%;
-    max-width: 420px;
+  .top-bar {
+    position: absolute;
+    top: 32px;
+    left: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--fg);
+    opacity: 0.6;
   }
 
-  /* ヘッダー */
-  .header {
-    margin-bottom: 56px;
+  .top-bar-line {
+    width: 32px;
+    height: 1px;
+    background: var(--fg);
+    opacity: 0.4;
+  }
+
+  /* 右：コンテンツエリア */
+  .content-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 64px 56px;
     opacity: 0;
-    animation: fadeUp 0.8s ease forwards;
+    animation: fadeIn 1s ease 0.3s forwards;
   }
 
   .site-name {
-    font-size: clamp(13px, 3.5vw, 15px);
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    line-height: 1.65;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 2.8vw, 32px);
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
     color: var(--fg);
-    margin-bottom: 10px;
+    margin-bottom: 14px;
   }
 
-  .tagline {
+  .tagline-ja {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
     font-size: 11px;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    line-height: 1.7;
+    margin-bottom: 4px;
+  }
+
+  .tagline-en {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    font-weight: 300;
     color: var(--muted);
     letter-spacing: 0.18em;
-    font-family: 'DM Mono', monospace;
-    font-weight: 300;
+    line-height: 1.7;
   }
 
-  /* 区切り線 */
   .divider {
-    width: 24px;
+    width: 32px;
     height: 1px;
     background: var(--line);
-    margin: 20px 0;
+    margin: 28px 0;
   }
 
-  /* リンクリスト */
+  .links-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
   .links {
     list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
   }
 
   .links li {
     opacity: 0;
-    animation: fadeUp 0.6s ease forwards;
+    animation: fadeIn 0.5s ease forwards;
   }
-  .links li:nth-child(1) { animation-delay: 0.15s; }
-  .links li:nth-child(2) { animation-delay: 0.25s; }
-  .links li:nth-child(3) { animation-delay: 0.35s; }
-  .links li:nth-child(4) { animation-delay: 0.45s; }
+  .links li:nth-child(1) { animation-delay: 0.5s; }
+  .links li:nth-child(2) { animation-delay: 0.65s; }
+  .links li:nth-child(3) { animation-delay: 0.8s; }
 
   .link-item {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 0;
+    align-items: baseline;
+    gap: 20px;
+    padding: 18px 0;
     border-bottom: 1px solid var(--line);
     text-decoration: none;
     color: var(--fg);
-    transition: background 0.2s, padding 0.2s;
-    border-radius: 4px;
-    gap: 12px;
+    transition: opacity 0.2s;
   }
 
   .links li:first-child .link-item {
@@ -107,111 +153,126 @@
   }
 
   .link-item:hover {
-    background: var(--hover-bg);
-    padding-left: 12px;
-    padding-right: 12px;
+    opacity: 0.4;
   }
 
-  .link-left {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  .link-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
   }
 
   .link-label {
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 0.08em;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: 300;
+    letter-spacing: 0.05em;
     color: var(--fg);
   }
 
-  .link-desc {
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .link-arrow {
-    font-size: 13px;
-    color: var(--muted);
-    flex-shrink: 0;
-    transition: transform 0.2s, color 0.2s;
-  }
-
-  .link-item:hover .link-arrow {
-    transform: translateX(4px);
-    color: var(--fg);
-  }
-
-  /* フッター */
   .footer {
     margin-top: 48px;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.15em;
-    font-family: 'DM Mono', monospace;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     opacity: 0;
-    animation: fadeUp 0.6s ease 0.6s forwards;
+    animation: fadeIn 0.5s ease 1s forwards;
   }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
+  .footer-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .footer-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 680px) {
+    body { grid-template-columns: 1fr; }
+    .image-panel { height: 50vh; }
+    .content-panel { padding: 48px 32px; }
   }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <header class="header">
-    <p class="site-name">世の中に綿パンが少なくて<br>困る</p>
+  <div class="image-panel">
+    <div class="top-bar">
+      <div class="top-bar-line"></div>
+      <span>MEN-PAN / 2026</span>
+    </div>
+    <div class="image-placeholder">IMAGE</div>
+  </div>
+
+  <div class="content-panel">
+
+    <p class="site-name">世の中に綿パンが<br>少なくて困る</p>
+    <p class="tagline-ja">綿素材をテーマにした自然なビジュアル / MYFANS限定コンテンツ</p>
+    <p class="tagline-en">Cotton-based candid visuals / exclusive content on MYFANS</p>
+
     <div class="divider"></div>
-    <p class="tagline">AI-generated art &amp; illustration</p>
-  </header>
 
-  <ul class="links">
+    <p class="links-label">Links</p>
 
-    <li>
-      <a class="link-item" href="https://myfans.jp/take_a_pt" target="_blank" rel="noopener">
-        <div class="link-left">
+    <ul class="links">
+      <li>
+        <a class="link-item" href="https://myfans.jp/take_a_pt" target="_blank" rel="noopener">
+          <span class="link-num">01</span>
           <span class="link-label">myfans</span>
-          <span class="link-desc">作品・コンテンツ販売</span>
-        </div>
-        <span class="link-arrow">→</span>
-      </a>
-    </li>
-
-    <!-- X（Twitter）追加用 -->
-    <!--
-    <li>
-      <a class="link-item" href="https://twitter.com/YOURHANDLE" target="_blank" rel="noopener">
-        <div class="link-left">
-          <span class="link-label">X / Twitter</span>
-          <span class="link-desc">新作・お知らせ</span>
-        </div>
-        <span class="link-arrow">→</span>
-      </a>
-    </li>
-    -->
-
-    <!-- Instagram 追加用 -->
-    <!--
-    <li>
-      <a class="link-item" href="https://instagram.com/YOURHANDLE" target="_blank" rel="noopener">
-        <div class="link-left">
+        </a>
+      </li>
+      <!-- X追加用
+      <li>
+        <a class="link-item" href="https://twitter.com/YOURHANDLE" target="_blank" rel="noopener">
+          <span class="link-num">02</span>
+          <span class="link-label">X</span>
+        </a>
+      </li>
+      -->
+      <!-- Instagram追加用
+      <li>
+        <a class="link-item" href="https://instagram.com/YOURHANDLE" target="_blank" rel="noopener">
+          <span class="link-num">03</span>
           <span class="link-label">Instagram</span>
-          <span class="link-desc">イラスト・画像ギャラリー</span>
-        </div>
-        <span class="link-arrow">→</span>
-      </a>
-    </li>
-    -->
+        </a>
+      </li>
+      -->
+    </ul>
 
-  </ul>
+    <footer class="footer">
+      <div class="footer-status">
+        <div class="footer-dot"></div>
+        <span>Now Updating</span>
+      </div>
+      <span class="footer-copy">© men-pan</span>
+    </footer>
 
-  <footer class="footer">© 世の中に綿パンが少なくて困る</footer>
+  </div>
 
-</div>
 </body>
 </html>
